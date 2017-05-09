@@ -1,3 +1,5 @@
+# This fork is providing Genero 4GL specific additions, look in fgldemo/ for an example.
+
 ---
 title: Device Motion
 description: Access accelerometer data.
