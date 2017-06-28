@@ -14,9 +14,20 @@ BUNDLE_IDENTIFIER   = com.4js.cdvaccelerometer
 APPNAME             = CDVAccel
 TARGET              = phone
 MODE                = debug
-BUILD_FGL           = yes
+BUILD_FGL           = no
 IDENTITY='(59W7RY75ZU)'
 PROVISIONING_PROFILE=/Users/leo/Library/MobileDevice/Provisioning\ Profiles/4js_wildcard
+
+MODULES  = $(patsubst %.4gl, %.42m, $(wildcard *.4gl))
+FORMS    = $(patsubst %.per, %.42f, $(wildcard *.per))
+
+%.42m: %.4gl
+	fglcomp -M $*
+
+%.42f: %.per
+	fglform -M $*
+
+all:: $(MODULES) $(FORMS)
 
 #include the generic Makefile-gmi with a lot of targets
 ifndef GMIDIR
@@ -25,6 +36,13 @@ endif
 MAKEFILE_GMI=$(shell GMIDIR="$(GMIDIR)";echo $${GMIDIR// /\\ })/lib/Makefile-gmi
 -include $(MAKEFILE_GMI)
 
-USER_EXTENSION_LIBS = $(GMIDIR)/lib/cordova/CDVAccelerometer.a
+# temporary workaround the transition from CDV prefixed plugin lib names to
+# github lib names
 
-main.42m: $(USER_EXTENSION_LIBS) bgevents.42f main.42f detail.42f
+USER_EXTENSION_LIBS=$(shell GMIDIR="$(GMIDIR)";echo $${GMIDIR// /\\ })/lib/cordova/CDVAccelerometer.a
+ifeq ($(wildcard $(USER_EXTENSION_LIBS)),)
+# new way
+  USER_EXTENSION_LIBS = -lcordova-plugin-device-motion
+endif
+
+main.42m: bgevents.42f main.42f detail.42f
