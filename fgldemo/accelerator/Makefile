@@ -19,9 +19,9 @@ PROVISIONING_PROFILE=/Users/leo/Library/MobileDevice/Provisioning\ Profiles/4js_
 
 PLUGIN=cordova-plugin-device-motion
 # in case you build the demo when having the plugin checked out of github 
-# then we use the fglcvdMedia.42m in the fgl dir of the plugin
-ifneq ($(wildcard ../../fgl),)
-  PLUGIN=$(CURDIR)/../..
+# then we use the native code from this repository
+ifneq ($(wildcard ../../fgldemo),)
+  PLUGIN=../..
 endif
 
 MODULES  = $(patsubst %.4gl, %.42m, $(wildcard *.4gl))
