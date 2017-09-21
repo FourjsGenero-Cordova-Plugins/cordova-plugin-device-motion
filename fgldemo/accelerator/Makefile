@@ -12,11 +12,17 @@
 
 BUNDLE_IDENTIFIER   = com.4js.cdvaccelerometer
 APPNAME             = CDVAccel
-TARGET              = phone
+DEVICE              = phone
 MODE                = debug
-BUILD_FGL           = no
 IDENTITY='(59W7RY75ZU)'
 PROVISIONING_PROFILE=/Users/leo/Library/MobileDevice/Provisioning\ Profiles/4js_wildcard
+
+PLUGIN=cordova-plugin-device-motion
+# in case you build the demo when having the plugin checked out of github 
+# then we use the fglcvdMedia.42m in the fgl dir of the plugin
+ifneq ($(wildcard ../../fgl),)
+  PLUGIN=$(CURDIR)/../..
+endif
 
 MODULES  = $(patsubst %.4gl, %.42m, $(wildcard *.4gl))
 FORMS    = $(patsubst %.per, %.42f, $(wildcard *.per))
@@ -29,20 +35,16 @@ FORMS    = $(patsubst %.per, %.42f, $(wildcard *.per))
 
 all:: $(MODULES) $(FORMS)
 
-#include the generic Makefile-gmi with a lot of targets
-ifndef GMIDIR
-GMIDIR=$(FGLDIR)
-endif
-MAKEFILE_GMI=$(shell GMIDIR="$(GMIDIR)";echo $${GMIDIR// /\\ })/lib/Makefile-gmi
--include $(MAKEFILE_GMI)
-
-# temporary workaround the transition from CDV prefixed plugin lib names to
-# github lib names
-
-USER_EXTENSION_LIBS=$(shell GMIDIR="$(GMIDIR)";echo $${GMIDIR// /\\ })/lib/cordova/CDVAccelerometer.a
-ifeq ($(wildcard $(USER_EXTENSION_LIBS)),)
-# new way
-  USER_EXTENSION_LIBS = -lcordova-plugin-device-motion
-endif
 
 main.42m: bgevents.42f main.42f detail.42f
+
+run: main.42m
+	fglrun main
+
+gmi.install: all
+	gmibuildtool --app-name=$(APPNAME) --bundle-id=$(BUNDLE_IDENTIFIER) --provisioning=$(PROVISIONING_PROFILE) --certificate=$(IDENTITY) --device=$(DEVICE) --mode=$(MODE) --install=yes --build-cordova=$(PLUGIN)
+
+clean::
+	rm -f *.sch *.dbs *.42*
+	rm -rf build bin distbin
+	rm -f cordovamap.txt gmi/*.a gmi/link_flags.sh *.4pwvs *.4pwdb
