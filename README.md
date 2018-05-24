@@ -1,4 +1,4 @@
-# This fork is providing Genero 4GL specific additions, look in fgldemo/ for an example.
+# This fork is providing Genero BDL specific additions, see [here](fgl/README.md).
 
 ---
 title: Device Motion

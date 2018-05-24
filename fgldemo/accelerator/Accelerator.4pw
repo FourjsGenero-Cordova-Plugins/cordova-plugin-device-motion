@@ -85,7 +85,6 @@
       <File filePath="main.4gl"/>
       <File filePath="main.per"/>
       <File filePath="bgevents.per"/>
-      <File filePath="detail.per"/>
     </Application>
   </Group>
 </Project>

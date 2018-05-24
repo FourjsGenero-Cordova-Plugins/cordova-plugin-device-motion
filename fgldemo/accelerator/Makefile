@@ -18,17 +18,19 @@ IDENTITY='(59W7RY75ZU)'
 PROVISIONING_PROFILE=/Users/leo/Library/MobileDevice/Provisioning\ Profiles/4js_wildcard
 
 PLUGIN=cordova-plugin-device-motion
+FGLLDPATH=../../fgl
 # in case you build the demo when having the plugin checked out of github 
 # then we use the native code from this repository
-ifneq ($(wildcard ../../fgldemo),)
-  PLUGIN=../..
-endif
+#ifneq ($(wildcard ../../fgl),)
+#  PLUGIN=../..
+#  FGLLDPATH=../..
+#endif
 
 MODULES  = $(patsubst %.4gl, %.42m, $(wildcard *.4gl))
 FORMS    = $(patsubst %.per, %.42f, $(wildcard *.per))
 
 %.42m: %.4gl
-	fglcomp -M $*
+	FGLLDPATH=$(FGLLDPATH) fglcomp -M $*
 
 %.42f: %.per
 	fglform -M $*
@@ -36,10 +38,10 @@ FORMS    = $(patsubst %.per, %.42f, $(wildcard *.per))
 all:: $(MODULES) $(FORMS)
 
 
-main.42m: bgevents.42f main.42f detail.42f
+main.42m: bgevents.42f main.42f
 
 run: main.42m
-	fglrun main
+	FGLLDPATH=$(FGLLDPATH) fglrun main
 
 gmi.install: all
 	gmibuildtool --app-name=$(APPNAME) --bundle-id=$(BUNDLE_IDENTIFIER) --provisioning=$(PROVISIONING_PROFILE) --certificate=$(IDENTITY) --device=$(DEVICE) --mode=$(MODE) --install=yes --build-cordova=$(PLUGIN)

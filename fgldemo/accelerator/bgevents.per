@@ -8,19 +8,21 @@
 # purely for information purposes only.
 
 LAYOUT
-SCROLLGRID(WANTFIXEDPAGESIZE=NO)
+TABLE
 {
-t[timestamp     ]x[x             ]
-y[y             ]z[z             ]
+[da                                |ts                ]
+[da                                |ts                ]
+[da                                |ts                ]
+[da                                |ts                ]
 }
 END
+END
+
 ATTRIBUTES
-x=FORMONLY.x;
-y=FORMONLY.y;
-z=FORMONLY.z;
-timestamp=FORMONLY.timestamp;
-PHANTOM FORMONLY.callbackId;
+ts=FORMONLY.timestamp, JUSTIFY=LEFT;
+da=FORMONLY.data, SCROLL;
+END
 
 INSTRUCTIONS
-SCREEN RECORD scr(timestamp,callbackId,x,y,z);
-
+SCREEN RECORD scr(FORMONLY.*);
+END
