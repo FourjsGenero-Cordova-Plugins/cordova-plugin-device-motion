@@ -7,4 +7,4 @@ IMPORT FGL fglcdvMotion
 ```
 The wrapper library is available since Genero 3.20.
 
-The Genero wrapper API is described [here](https://rawgit.com/FourjsGenero-Cordova-Plugins/cordova-plugin-motion/master/fgl/fglcdvMotion.html)
+The Genero wrapper API is described [here](https://rawgit.com/FourjsGenero-Cordova-Plugins/cordova-plugin-device-motion/master/fgl/fglcdvMotion.html)
