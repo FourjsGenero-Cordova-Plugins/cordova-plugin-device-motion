@@ -55,17 +55,18 @@ PRIVATE DEFINE callbackIdStart STRING
 PRIVATE DEFINE callbackIdStop STRING
 PRIVATE DEFINE fetchTime INTERVAL SECOND TO FRACTION(3)
 
-PRIVATE DEFINE initialized SMALLINT
+PRIVATE DEFINE initialized BOOLEAN
 
 #+ Initializes the plugin library
 #+
 #+ The init() function must be called prior to other calls.
 #+
 PUBLIC FUNCTION init()
-    IF initialized == 0 THEN
-        -- do init stuff
+    IF initialized THEN -- exclusive library usage
+        CALL fatalError("The library is already in use.")
     END IF
-    LET initialized = initialized + 1
+    -- do init stuff
+    LET initialized = TRUE
 END FUNCTION
 
 #+ Finalizes the plugin library
@@ -73,18 +74,20 @@ END FUNCTION
 #+ The fini() function should be called when the library is no longer used.
 #+
 PUBLIC FUNCTION fini()
-    IF initialized >= 0 THEN
-       LET initialized = initialized - 1
-       IF initialized == 0 THEN
-           -- do fini stuff
-       END IF
+    IF initialized THEN
+        -- do fini stuff
+        LET initialized = FALSE
     END IF
 END FUNCTION
 
+PRIVATE FUNCTION fatalError(msg STRING)
+    DISPLAY "fglcdvMotion error: ", msg
+    EXIT PROGRAM 1
+END FUNCTION
+
 PRIVATE FUNCTION check_lib_state()
-    IF initialized == 0 THEN
-       DISPLAY "fglcdvMotion error: Library is not initialized."
-       EXIT PROGRAM 1
+    IF NOT initialized THEN
+        CALL fatalError("Library is not initialized.")
     END IF
 END FUNCTION
 
@@ -97,6 +100,9 @@ END FUNCTION
 #+ @return 0 upon success, -1 in case of error
 PUBLIC FUNCTION start() RETURNS INTEGER
     CALL check_lib_state()
+    IF callbackIdStart IS NOT NULL THEN
+        RETURN -2
+    END IF
     TRY
         CALL ui.interface.frontcall("cordova","callWithoutWaiting",
                 ["Accelerometer","start"], [callbackIdStart])
@@ -116,6 +122,9 @@ END FUNCTION
 PUBLIC FUNCTION stop() RETURNS INTEGER
     DEFINE tmp STRING
     CALL check_lib_state()
+    IF callbackIdStart IS NULL THEN
+        RETURN -2
+    END IF
     TRY
         CALL ui.interface.frontcall("cordova","callWithoutWaiting",
                 ["Accelerometer","stop"], [callbackIdStop])

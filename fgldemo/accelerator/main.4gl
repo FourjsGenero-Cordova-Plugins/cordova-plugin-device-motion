@@ -61,6 +61,8 @@ MAIN
         EXIT MENU
     END MENU
 
+    CALL fglcdvMotion.fini()
+
 END MAIN
 
 FUNCTION setup_dialog(d ui.Dialog)
