@@ -26,7 +26,8 @@ IMPORT util
 #+
 #+ The timestamp member is a FLOAT representing the number of milliseconds
 #+ since epoch (1970-01-01). Such value can be converted to a DATETIME with
-#+ the timestampMillisecondsToDatetime() function.
+#+ @code
+#+ util.Datetime.fromSecondsSinceEpoch( timestamp / 1000 )
 #+
 #+ Record members are:
 #+
@@ -190,21 +191,4 @@ PUBLIC FUNCTION getFetchTime()
                    RETURNS INTERVAL SECOND TO FRACTION(3)
     CALL check_lib_state()
     RETURN fetchTime
-END FUNCTION
-
-#+ Converts a number of milliseconds since epoch to a DATETIME.
-#+
-#+ This helper function is provided to convert the timestamp member of
-#+ a MotionDataT record to a regular BDL DATETIME YEAR TO FRACTION(3).
-#+
-#+ @param ms - the number of milliseconds since epoch (1970-01-01).
-#+
-#+ @return the resulting DATETIME value.
-PUBLIC FUNCTION timestampMillisecondsToDatetime( ms FLOAT )
-                   RETURNS DATETIME YEAR TO FRACTION(3)
-    DEFINE s FLOAT
-    DEFINE dt DATETIME YEAR TO FRACTION(3)
-    LET s = ms / 1000
-    LET dt = util.Datetime.fromSecondsSinceEpoch( s )
-    RETURN dt
 END FUNCTION

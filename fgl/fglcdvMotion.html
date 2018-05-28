@@ -66,11 +66,6 @@
 <td class="summary-text">
 <b><a href="#stop">stop</a></b>() RETURNS INTEGER<br> Stop capture of motion data.</td>
 </tr>
-<tr>
-<td class="summary-text"></td>
-<td class="summary-text">
-<b><a href="#timestampMillisecondsToDatetime">timestampMillisecondsToDatetime</a></b>(ms FLOAT) RETURNS DATETIME YEAR TO FRACTION<br> Converts a number of milliseconds since epoch to a DATETIME.</td>
-</tr>
 </table>
 <br><h2>Types</h2>
 <a id="MotionDataArrayT"> </a><h3>MotionDataArrayT</h3>
@@ -100,8 +95,10 @@
  a device lies flat and facing up, x, y, and z values returned should be 0,
  0, and 9.81.</p>
 <p> The timestamp member is a FLOAT representing the number of milliseconds
- since epoch (1970-01-01). Such value can be converted to a DATETIME with
- the timestampMillisecondsToDatetime() function.</p>
+ since epoch (1970-01-01). Such value can be converted to a DATETIME with</p>
+<p>
+      <span><pre> util.Datetime.fromSecondsSinceEpoch( timestamp / 1000 )</pre></span>
+    </p>
 <p> Record members are:</p>
 <p>  x FLOAT : Amount of acceleration on the x-axis (in m/s^2)</p>
 <p>  y FLOAT : Amount of acceleration on the y-axis (in m/s^2)</p>
@@ -205,24 +202,6 @@
 <dd><dl>
 <dt><b>Returns:</b></dt>
 <dd>0 upon success, -1 in case of error<br>
-</dd>
-</dl></dd>
-</dl>
-<hr>
-<a id="timestampMillisecondsToDatetime"> </a><h3>timestampMillisecondsToDatetime</h3>
-<tt>FUNCTION <b>timestampMillisecondsToDatetime</b>(ms FLOAT) RETURNS DATETIME YEAR TO FRACTION</tt><dl>
-<dd>
-<p> Converts a number of milliseconds since epoch to a DATETIME.</p>
-<p> This helper function is provided to convert the timestamp member of
- a MotionDataT record to a regular BDL DATETIME YEAR TO FRACTION(3).</p>
-</dd>
-<dd><dl>
-<dt><b>Parameters:</b></dt>
-<dd>
-<code>ms</code> - - the number of milliseconds since epoch (1970-01-01).<br>
-</dd>
-<dt><b>Returns:</b></dt>
-<dd>the resulting DATETIME value.<br>
 </dd>
 </dl></dd>
 </dl>

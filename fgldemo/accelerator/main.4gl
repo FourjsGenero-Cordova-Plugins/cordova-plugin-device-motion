@@ -78,8 +78,7 @@ FUNCTION collectEvents(evarr DYNAMIC ARRAY OF EvinfoT)
     IF c < 0 THEN RETURN c END IF
     FOR i=1 TO c
         LET n = evarr.getLength()+1
-        LET evarr[n].timestamp =
-                     fglcdvMotion.timestampMillisecondsToDatetime( mda[i].timestamp )
+        LET evarr[n].timestamp = util.Datetime.fromSecondsSinceEpoch( mda[i].timestamp / 1000 )
         LET evarr[n].data = SFMT("x=%1, y=%2, z=%3",
                                  mda[i].x, mda[i].y, mda[i].z)
     END FOR
