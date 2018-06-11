@@ -18,13 +18,12 @@ IDENTITY='(59W7RY75ZU)'
 PROVISIONING_PROFILE=/Users/leo/Library/MobileDevice/Provisioning\ Profiles/4js_wildcard
 
 PLUGIN=cordova-plugin-device-motion
-FGLLDPATH=../../fgl
 # in case you build the demo when having the plugin checked out of github 
 # then we use the native code from this repository
-#ifneq ($(wildcard ../../fgl),)
-#  PLUGIN=../..
-#  FGLLDPATH=../..
-#endif
+ifneq ($(wildcard ../../fgldemo),)
+  PLUGIN=../..
+  FGLLDPATH=../../fgl
+endif
 
 MODULES  = $(patsubst %.4gl, %.42m, $(wildcard *.4gl))
 FORMS    = $(patsubst %.per, %.42f, $(wildcard *.per))
