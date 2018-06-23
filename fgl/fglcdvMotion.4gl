@@ -60,23 +60,21 @@ PRIVATE DEFINE initialized BOOLEAN
 
 #+ Initializes the plugin library
 #+
-#+ The init() function must be called prior to other calls.
+#+ The initialize() function must be called prior to other calls.
 #+
-PUBLIC FUNCTION init()
+PUBLIC FUNCTION initialize()
     IF initialized THEN -- exclusive library usage
         CALL fatalError("The library is already in use.")
     END IF
-    -- do init stuff
     LET initialized = TRUE
 END FUNCTION
 
 #+ Finalizes the plugin library
 #+
-#+ The fini() function should be called when the library is no longer used.
+#+ The finalize() function should be called when the library is no longer used.
 #+
-PUBLIC FUNCTION fini()
+PUBLIC FUNCTION finalize()
     IF initialized THEN
-        -- do fini stuff
         LET initialized = FALSE
     END IF
 END FUNCTION

@@ -25,7 +25,7 @@ MAIN
     OPEN FORM f FROM "main"
     DISPLAY FORM f
 
-    CALL fglcdvMotion.init()
+    CALL fglcdvMotion.initialize()
 
     MENU "Accelerometer"
     BEFORE MENU
@@ -61,7 +61,7 @@ MAIN
         EXIT MENU
     END MENU
 
-    CALL fglcdvMotion.fini()
+    CALL fglcdvMotion.finalize()
 
 END MAIN
 
